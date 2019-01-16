@@ -1,0 +1,153 @@
+var output,
+result; 
+var history_value=document.getElementById("history-value");
+var output_value=document.getElementById("output-value");
+var history=document.getElementById("history");
+var output=document.getElementById("output");
+var oprand;
+
+
+function getOutput(){
+	return document.getElementById("output-value").innerText;
+}
+function getHistory(){
+	return document.getElementById("history-value").innerText;
+}
+
+var ele=document.querySelectorAll(".number");
+var len=ele.length;
+document.onkeypress = function(evt) {
+    evt = evt || window.event;
+    var charCode = evt.keyCode || evt.which;
+    var charStr = String.fromCharCode(charCode);
+
+    if(charStr>=0 && charStr<=9 || charStr=="+" ||charStr=="-" || charStr=="*" || charStr=="/" ||charStr=="!"||charStr=="%"||charStr=="^"){
+        output=output_value.innerHTML+=charStr;
+    }
+    var len=output.length;
+
+    if(len>10){
+        alert("Sorry no more input is allowed");
+    }
+   
+};  
+for(var i=0;i<len;i++){
+ele[i].addEventListener("click",function()
+{
+    var num=this.id;
+    console.log(num);
+    output=output_value.innerHTML+=num;
+     var len=output.length;
+
+    if(len>10){
+        alert("Sorry no more input is allowed");
+    }
+},false);
+    
+}
+
+
+var ele=document.querySelectorAll(".operator");
+var len=ele.length;
+
+for(var i=0;i<len;i++){
+ele[i].addEventListener("click",function(){
+
+    oprand=this.id;
+    console.log(oprand);
+    output=output_value.innerHTML+=oprand;
+    history_value.innerHTML=getOutput();
+    output_value.innerHTML="";
+},false);
+    console.log(output);
+}
+
+
+var eq=document.getElementById("=");
+eq.addEventListener("click",function(){
+    console.log(oprand);
+    var op1= Number(getOutput());
+    var op2=getHistory();
+    var op2 = Number(op2.substring(0,op2.length-1));
+    switch(oprand){
+        case "+":
+            var res=op2+op1;
+            output_value.innerHTML=res;
+       break;
+       case "-":
+            var res=op2-op1;
+            output_value.innerHTML=res;
+       break;
+       case "/":
+            var res=op2/op1;
+            output_value.innerHTML=res;
+       break;
+       case "*":
+       var res=op2*op1;
+       output_value.innerHTML=res;
+        break;
+      case "%":
+        var res=op2%op1;
+        output_value.innerHTML=res;
+    break;
+     default:
+        console.log(oprand);
+
+    }
+     console.log(op2 +" "+ op1);
+     history_value.innerHTML=op2+oprand+op1;
+           
+ 
+},false);
+
+var squr=document.getElementById("X²");
+squr.addEventListener("click",function(){
+    var op2=getHistory();
+    var op2 = Number(op2.substring(0,op2.length-2));
+    console.log(op2);
+    res=op2*op2;
+    console.log(res);
+    output_value.innerHTML=res;
+});
+
+var cube=document.getElementById("X³");
+cube.addEventListener("click",function(){
+    var op2=getHistory();
+    var op2 = Number(op2.substring(0,op2.length-2));
+    console.log(op2);
+    res=op2*op2*op2;
+    console.log(res);
+    output_value.innerHTML=res;
+});
+
+var root=document.getElementById("√");
+root.addEventListener("click",function(){
+    var op2=getHistory();
+    var op2 = Number(op2.substring(0,op2.length-1));
+    console.log(op2);
+    res=Math.sqrt(op2);
+    console.log(res);
+    output_value.innerHTML=res;
+});
+
+var fact=document.getElementById("!");
+fact.addEventListener("click",function(){
+    var op2=getHistory();
+    var op2 = Number(op2.substring(0,op2.length-1));
+    console.log(op2);
+    factorial(op2);
+    console.log( factorial(op2));
+    output_value.innerHTML=factorial(op2);
+}),false;
+function factorial(num){
+    if(num==0)
+        return 1;
+    else
+        return num*factorial(num-1);
+}
+
+var clear=document.getElementById("clear");
+clear.addEventListener("click",function(){
+    output_value.innerHTML="";
+    history_value.innerHTML="";
+},false)
