@@ -58,6 +58,16 @@ body{
 	font-weight: bold;
 	font-size: 15px;
 }
+.backspace{
+	width: 50px;
+	height: 50px;
+	margin: 15px;
+
+	border-radius: 50%;
+	border-width: 0;
+	font-weight: bold;
+	font-size: 15px;
+}
 .number, .empty{
 	background-color: #eaedef;
 }
@@ -113,4 +123,16 @@ button:nth-child(10){
 button:nth-child(5){
 	font-size: 20px;
 	background-color: #9477af;
+}
+.history{
+	
+	width: 120px;
+	height: 60px;
+	margin: 15px;
+	float: right;
+	border-radius: 50%;
+	border-width: 0;
+	font-weight: bold;
+	font-size: 15px;
+	background-color: #f08080;
 }
