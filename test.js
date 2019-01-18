@@ -1,13 +1,15 @@
-var output,
-    result;
+var output, result;
+const calculator = document.getElementById("mySidenav");
 var history_value = document.getElementById("history-value");
 var output_value = document.getElementById("output-value");
 var history = document.getElementById("history");
 var output = document.getElementById("output");
 var oprand;
 var length = 0;
-var count = 0;
-const calculator = document.getElementById("mySidenav");
+
+var res;
+
+var storeToHistory;
 
 
 function getOutput() {
@@ -26,10 +28,20 @@ document.onkeypress = function (evt) {
     var charCode = evt.keyCode || evt.which;
     var charStr = String.fromCharCode(charCode);
     if (length < 10) {
-        if (charStr >= 0 && charStr <= 9 || charStr == "+" || charStr == "." || charStr == "-" || charStr == "*" || charStr == "/" || charStr == "!" || charStr == "%" || charStr == "^") {
-            output = output_value.innerHTML += charStr;
-            length = output.length;
-            console.log("hi");
+         if (charStr >= 0 && charStr <= 9 /*|| charStr == "+" || charStr == "." || charStr == "-" || charStr == "*" || charStr == "/" || charStr == "!" || charStr == "%" || charStr == "^"*/) {
+            var enter = document.getElementById(charStr)
+            if (enter) {
+                //enter.addEventListener("");
+                output = output_value.innerHTML += enter.innerHTML;
+                length = output.length;
+
+
+                // alert("find!");
+            }
+
+            // output = output_value.innerHTML += charStr;
+            // length = output.length;
+            //console.log("hi");
         }
 
     }
@@ -43,12 +55,12 @@ document.onkeypress = function (evt) {
 for (var i = 0; i < len; i++) {
     ele[i].addEventListener("click", function () {
         var num = this.id;
-        console.log(num);
+        //console.log(num);
 
         if (length < 10) {
             output = output_value.innerHTML += num;
             length = output.length;
-            console.log(length);
+            //console.log(length);
         }
         else if (length >= 10) {
             alert("Sorry no more input is allowed");
@@ -64,113 +76,177 @@ var len = ele.length;
 for (var i = 0; i < len; i++) {
     ele[i].addEventListener("click", function () {
 
-        oprand = this.id;
-        console.log(oprand);
-        output = output_value.innerHTML += oprand;
-        history_value.innerHTML = getOutput();
-        output_value.innerHTML = "";
-        length = 0;
+        if (output_value.innerHTML.length == 0) {
+            alert("Please Enter digit first!!");
+            output_value.innerHTML.length = "";
+        }
+        else {
+            oprand = this.id;
+            //console.log(oprand);
+            output = output_value.innerHTML += oprand;
+            history_value.innerHTML = getOutput();
+            output_value.innerHTML = "";
+            length = 0;
+        }
     }, false);
-    console.log(output);
+    //console.log(output);
 }
 
 
 var eq = document.getElementById("=");
 eq.addEventListener("click", function () {
-    console.log(oprand);
+
+    //console.log(oprand);
     var op1 = Number(getOutput());
     var op2 = getHistory();
-    var op2 = Number(op2.substring(0, op2.length - 1));
-    switch (oprand) {
-        case "+":
-            var res = op2 + op1;
-            output_value.innerHTML = res;
-            break;
-        case "-":
-            var res = op2 - op1;
-            output_value.innerHTML = res;
-            break;
-        case "/":
-            var res = op2 / op1;
-            output_value.innerHTML = res;
-            break;
-        case "*":
-            var res = op2 * op1;
-            output_value.innerHTML = res;
-            break;
-        case "%":
-            var res = op2 % op1;
-            output_value.innerHTML = res;
-            break;
-        case "^":
-            res = Math.pow(op2, op1);
-            console.log(res);
-            output_value.innerHTML = Number(res);
-            break;
-        default:
-            console.log(oprand);
-
+    if (op2 == "" || op1 == "") {
+        alert("Enter value to compute!");
     }
-    console.log(op2 + " " + op1);
-    history_value.innerHTML = op2 + oprand + op1;
-    var his = op2 + oprand + op1;
-    count++;
-    localStorage.setItem(count, his + "=" + res);
-}, false)
 
-    ;
+    else {
+
+      //  console.log(op2[0]);
+        var op2 = Number(op2.substring(0, op2.length - 1));
+        switch (oprand) {
+            case "+":
+                var res = op2 + op1;
+                output_value.innerHTML = res;
+                break;
+            case "-":
+                var res = op2 - op1;
+                output_value.innerHTML = res;
+                break;
+            case "/":
+                var res = op2 / op1;
+                output_value.innerHTML = res;
+                break;
+            case "*":
+                var res = op2 * op1;
+                output_value.innerHTML = res;
+                break;
+            case "%":
+                var res = op2 % op1;
+                output_value.innerHTML = res;
+                break;
+            case "^":
+
+                res = Math.pow(op2, op1);
+        //        console.log(res);
+                output_value.innerHTML = Number(res);
+                break;
+
+            default:
+          //      console.log(oprand);
+
+        }
+
+
+
+
+
+       // console.log(op2 + " " + op1);
+        history_value.innerHTML = op2 + oprand + op1;
+        var his = op2 + oprand + op1 + "=";
+        //console.log("hhhh" + res);
+
+        storeToHistory = { his, res };
+        //console.log(res);
+
+        storeHistory();
+        
+        // count++;
+        // localStorage.setItem(count, his + "=" + res);
+    }
+}, false);
+
+
+
 
 var squr = document.getElementById("X²");
 squr.addEventListener("click", function () {
     var op2 = getHistory();
-    var his = getHistory();
-    var op2 = Number(op2.substring(0, op2.length - 2));
-    console.log(op2);
-    res = op2 * op2;
-    console.log(res);
-    output_value.innerHTML = res;
-    count++;
-    localStorage.setItem(count, his + "=" + res);
+    if (op2 == "") {
+        //console.log("null");
+    }
+    else {
+
+        var his = getHistory();
+        var op2 = Number(op2.substring(0, op2.length - 2));
+        //console.log("hi" + op2);
+        res = op2 * op2;
+        //console.log(res);
+        output_value.innerHTML = res;
+        // count++;
+        //localStorage.setItem(count, his + "=" + res);
+        var his = his + "=";
+        storeToHistory = { his, res };
+        storeHistory();
+    }
 });
 
 var cube = document.getElementById("X³");
 cube.addEventListener("click", function () {
     var op2 = getHistory();
-    var his = getHistory();
-    var op2 = Number(op2.substring(0, op2.length - 2));
-    console.log(op2);
-    res = op2 * op2 * op2;
-    console.log(res);
-    output_value.innerHTML = res;
-    count++;
-    localStorage.setItem(count, his + "=" + res);
+    if (op2 == "") {
+        //console.log("null");
+    } else {
+        var his = getHistory();
+        var op2 = Number(op2.substring(0, op2.length - 2));
+        //console.log(op2);
+        res = op2 * op2 * op2;
+        var his = his + "=";
+        storeToHistory = { his, res };
+        //console.log(res);
+        output_value.innerHTML = res;
+        //count++;
+        storeHistory();
+    }
 });
 
 var root = document.getElementById("√");
 root.addEventListener("click", function () {
     var op2 = getHistory();
-    var his = getHistory();
-    var op2 = Number(op2.substring(0, op2.length - 1));
-    console.log(op2);
-    res = Math.sqrt(op2);
-    console.log(res);
-    output_value.innerHTML = res;
-    count++;
-    localStorage.setItem(count, his + "=" + res);
+    if (op2 == "") {
+        //console.log("null");
+    }
+    else {
+        var his = getHistory();
+        var op2 = Number(op2.substring(0, op2.length - 1));
+        //console.log(op2);
+        res = Math.sqrt(op2);
+        //console.log(res);
+        output_value.innerHTML = res;
+        // count++;
+        // localStorage.setItem(count, his + "=" + res);
+        var his = his + "=";
+        storeToHistory = { his, res };
+        storeHistory();
+    }
 });
 
 var fact = document.getElementById("!");
 fact.addEventListener("click", function () {
     var op2 = getHistory();
-    var his = getHistory();
-    var op2 = Number(op2.substring(0, op2.length - 1));
-    console.log(op2);
-    factorial(op2);
-    console.log(factorial(op2));
-    output_value.innerHTML = factorial(op2);
-    var res = factorial(op2);
-    count++;
-    localStorage.setItem(count, his + "=" + res);
+    if (op2 == "") {
+        //console.log("null");
+    } else {
+        var his = getHistory();
+        var op2 = Number(op2.substring(0, op2.length - 1));
+        //console.log(op2);
+        //console.log(typeof(op2));
+        if (his.includes('.')) {
+            alert("Floating point value is not allowed is Factorial function!!\nEnter Integer value!");
+        }
+        factorial(op2);
+        //console.log(factorial(op2));
+        output_value.innerHTML = factorial(op2);
+        var res = factorial(op2);
+        // count++;
+        // localStorage.setItem(count, his + "=" + res);
+        var his = his + "=";
+        storeToHistory = { his, res };
+        storeHistory();
+    }
 }), false;
 function factorial(num) {
     if (num == 0)
@@ -203,22 +279,56 @@ function reverseNumberFormat(num) {
 
 
 
+// function display() {
+//     var ll = localStorage.length;
+//     console.log(ll);
+//     for (var j = ll - 1; j >= ll - 10; j--) {
 
+//         var data = localStorage.getItem(j);
+//         console.log(data);
+//         var sH = document.createElement('p');
+//         sH.style.textAlign = "center";// is a node
+//         sH.innerHTML = data;
+//         calculator.appendChild(sH);
+//     }
+// }
 
-function display() {
-    
-    for (var j = 1; j <= 10; j++) {
-        var data = localStorage.getItem(j);
-        var sH = document.createElement('p');
-        sH.style.textAlign = "center";// is a node
-        sH.innerHTML = data;
-        calculator.appendChild(sH);
+// function removechild() {
+//     while (calculator.children.length - 3) {
+//         calculator.removeChild(calculator.lastChild);
+//     }
+// }
+function storeHistory() {
+   // console.log(res);
+    let abc = [];
+    abc = JSON.parse(localStorage.getItem('ans'));
+
+    if (abc == null) {
+        abc = [];
     }
+    if (Object.keys(abc).length > 9) {
+        abc.shift();
+    }
+    abc.push(storeToHistory);
+
+    localStorage.setItem('ans', JSON.stringify(abc));
 }
 
-function removechild(){
-    while (calculator.children.length-3) {
-        calculator.removeChild(calculator.lastChild);
-    }
-}
 
+while (calculator.children.length - 1) {
+    calculator.removeChild(calculator.lastChild);
+}
+let historyDisplay = [];
+historyDisplay = JSON.parse(localStorage.getItem('ans'));
+if (historyDisplay !== null) {
+
+    historyDisplay.forEach(element => {
+        let newA = document.createElement('p');
+        newA.textContent = (element.his + " " + element.res);
+        newA.style.textAlign = "center";
+        newA.style.paddingBottom = "10px";
+        calculator.appendChild(newA);
+       // window.location.reload();
+        
+    });
+}

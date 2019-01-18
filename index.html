@@ -9,16 +9,20 @@
 <body>
 	<div id="mySidenav" class="sidenav">
 		
-		<a href="javascript:void(0)" class="closebtn" onclick="closeNav();removechild()">&times;</a>
-		<a href="#">History</a>
+		<a href="javascript:void(0)" class="closebtn" onclick="closeNav();">&times;</a>
+		<a href="#" id="history" style="font-size:50;" onclick="refreshPage()">History</a>
+
+		<!-- <input type="submit" value="clear" id="clearall"> -->
 	</div>
 
 
-	<span style="font-size:30px;cursor:pointer" onclick="openNav();display();">&#9776; History</span>
+	<span style="font-size:30px;cursor:pointer" onclick="openNav();	">&#9776; History</span>
 
 	<script>
 		function openNav() {
-			document.getElementById("mySidenav").style.width = "250px";
+		
+			document.getElementById("mySidenav").style.width = "35.5%";
+			document.getElementById("mySidenav").style.height = "100%";
 		}
 
 		function closeNav() {
@@ -36,7 +40,7 @@
 				</div>
 			</div>
 			<div id="keyboard">
-				<button class="operator" id="clear">C</button>
+				<button class="clear" id="clear">C</button>
 				<button class="backspace" id="backspace">CE</button>
 				<button class="operator" id="%">%</button>
 				<button class="operator" id="/">&#247;</button>
